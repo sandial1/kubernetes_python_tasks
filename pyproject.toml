@@ -1,0 +1,19 @@
+[project]
+name = "kubernetes-python-tasks"
+version = "0.1.0"
+description = "EPAM Systems Kubernetes Python Tasks"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.14.11",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["src/tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
