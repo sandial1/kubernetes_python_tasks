@@ -18,6 +18,7 @@ class TestDictionaryInit:
         d2.newentry("test2", "definition2")
         assert "test" not in d2.entries
         assert "test2" not in d1.entries
+        assert d1 is not d2
 
 
 class TestNewEntry:
@@ -29,6 +30,10 @@ class TestNewEntry:
         d.newentry("Apple", "A fruit that grows on trees")
         assert "Apple" in d.entries
         assert d.entries["Apple"] == "A fruit that grows on trees"
+        assert isinstance(d.entries, dict)
+        assert len(d.entries) == 1
+        assert list(d.entries.keys()) == ["Apple"]
+        assert list(d.entries.values()) == ["A fruit that grows on trees"]
 
     def test_add_multiple_entries(self):
         """Should be able to add multiple different words."""
@@ -38,11 +43,14 @@ class TestNewEntry:
         assert len(d.entries) == 2
         assert d.entries["Apple"] == "A fruit that grows on trees"
         assert d.entries["Banana"] == "A yellow tropical fruit"
+        assert set(d.entries.keys()) == {"Apple", "Banana"}
+        assert set(d.entries.values()) == {"A fruit that grows on trees", "A yellow tropical fruit"}
 
     def test_overwrite_existing_entry(self):
         """Adding the same word again should overwrite the old definition."""
         d = Dictionary()
         d.newentry("Apple", "First definition")
+        assert d.entries["Apple"] == "First definition"
         d.newentry("Apple", "Second definition")
         assert d.entries["Apple"] == "Second definition"
         assert len(d.entries) == 1
@@ -91,7 +99,9 @@ class TestLook:
         d.newentry("Apple", "A fruit")
         d.newentry("Banana", "A yellow fruit")
         d.newentry("Cherry", "A red fruit")
+        assert d.look("Apple") == "A fruit"
         assert d.look("Banana") == "A yellow fruit"
+        assert d.look("Cherry") == "A red fruit"
 
     def test_look_case_sensitive(self):
         """Looking up words should be case-sensitive."""
