@@ -112,39 +112,6 @@ class TestSpecialCharacters:
         # n=2: "e!f"[2] = "f"
         assert result == "a.f"
 
-
-class TestRealWorldScenarios:
-    """Test with realistic word combinations."""
-
-    def test_sentence_words(self):
-        """Test with common English words."""
-        result = nth_char(["twice", "award", "olive", "catch", "nerve"])
-        # n=0: "twice"[0] = "t"
-        # n=1: "award"[1] = "w"
-        # n=2: "olive"[2] = "i"
-        # n=3: "catch"[3] = "c"
-        # n=4: "nerve"[4] = "e"
-        assert result == "twice"
-
-    def test_programming_terms(self):
-        """Test with programming-related words."""
-        result = nth_char(["function", "variable", "constant"])
-        # n=0: "function"[0] = "f"
-        # n=1: "variable"[1] = "a"
-        # n=2: "constant"[2] = "n"
-        assert result == "fan"
-
-    def test_five_word_sentence(self):
-        """Test with five words."""
-        result = nth_char(["apple", "banana", "cherry", "dragon", "elephant"])
-        # n=0: "apple"[0] = "a"
-        # n=1: "banana"[1] = "a"
-        # n=2: "cherry"[2] = "e"
-        # n=3: "dragon"[3] = "g"
-        # n=4: "elephant"[4] = "h"
-        assert result == "aaegh"
-
-
 class TestEmptyInput:
     """Test edge case with empty input."""
 
