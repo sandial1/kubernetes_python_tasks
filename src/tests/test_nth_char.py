@@ -112,6 +112,7 @@ class TestSpecialCharacters:
         # n=2: "e!f"[2] = "f"
         assert result == "a.f"
 
+
 class TestEmptyInput:
     """Test edge case with empty input."""
 

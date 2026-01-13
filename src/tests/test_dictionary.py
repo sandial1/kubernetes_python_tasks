@@ -44,7 +44,10 @@ class TestNewEntry:
         assert d.entries["Apple"] == "A fruit that grows on trees"
         assert d.entries["Banana"] == "A yellow tropical fruit"
         assert set(d.entries.keys()) == {"Apple", "Banana"}
-        assert set(d.entries.values()) == {"A fruit that grows on trees", "A yellow tropical fruit"}
+        assert set(d.entries.values()) == {
+            "A fruit that grows on trees",
+            "A yellow tropical fruit",
+        }
 
     def test_overwrite_existing_entry(self):
         """Adding the same word again should overwrite the old definition."""
