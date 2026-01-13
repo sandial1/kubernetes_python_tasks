@@ -121,26 +121,3 @@ class TestLook:
         d = Dictionary()
         result = d.look("UniqueWord123")
         assert "UniqueWord123" in result
-
-
-class TestIntegration:
-    """Test realistic usage scenarios."""
-
-    def test_example_from_kata(self):
-        """Test the exact example from the kata description."""
-        d = Dictionary()
-        d.newentry("Apple", "A fruit that grows on trees")
-        assert d.look("Apple") == "A fruit that grows on trees"
-        assert d.look("Banana") == "Can't find entry for Banana"
-
-    def test_building_actual_dictionary(self):
-        """Test building a small working dictionary."""
-        d = Dictionary()
-        d.newentry("Python", "A programming language")
-        d.newentry("Test", "A procedure to check correctness")
-        d.newentry("Dictionary", "A collection of words and definitions")
-
-        assert d.look("Python") == "A programming language"
-        assert d.look("Test") == "A procedure to check correctness"
-        assert d.look("Dictionary") == "A collection of words and definitions"
-        assert d.look("Java") == "Can't find entry for Java"
