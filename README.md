@@ -3,16 +3,20 @@
 ## Overview
 This project provides Python utilities and tasks for managing Kubernetes clusters and workloads.
 
-## Features
-- Python-based Kubernetes automation
-- Task orchestration and management
-- Common Kubernetes operations simplified
+## Exercises
+- Dictionary class - dictionary.py
+- How much will you spend? - spending.py
+- Nth-char word - nth_char.py
 
-## Getting Started
+## Observations
+1. Every task assumes ideal conditions so validation, logging and error handling can be added to extend the functionality of these algorithms.
+2. These tasks are basically extract and transform operations which are part of the data preparation steps and as such pipelined and scaled.
+3. Following the idea that these are ETL substitute funtions we could create a container based workload which to scale them and automate them in a single project pipeline.
+
+
+## Requirements & setup
 1. Clone the repository
 2. Install dependencies: `uv install`
-3. Configure your Kubernetes context
-4. Run tasks as needed
 
 ## Usage
 ```bash
@@ -25,8 +29,8 @@ uv run pytest
 kubernetes_python_tasks/
 ├── README.md
 ├── src/
-├──── exercises/
-└──── tests/
+├───├─ exercises/
+└───├─ tests/
 ```
 
 ## Requirements
