@@ -26,9 +26,14 @@ def nth_char(words: list[str]) -> str:
         Test cases contain valid input only (non-empty array,
         and each word has enough letters).
     """
-    result = ""
+    if len(words) == 0:
+        return ""
 
+    result = ""
     for n, word in enumerate(words):
-        result += word[n]
+        try:
+            result += word[n]
+        except IndexError:
+            break
 
     return result

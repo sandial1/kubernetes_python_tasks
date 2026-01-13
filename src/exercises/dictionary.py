@@ -1,8 +1,8 @@
-class Dictionary:
-    """A simple dictionary class that stores word definitions."""
+"""A simple dictionary class that stores word definitions."""
 
+
+class Dictionary:
     def __init__(self):
-        """Initialize an empty dictionary."""
         self.entries = {}
 
     def newentry(self, word: str, definition: str) -> None:
@@ -23,7 +23,8 @@ class Dictionary:
             word: The word to look up
 
         Returns:
-            The definition if found, or an error message if not found
+            The definition if found, or an error message:
+            Can't find entry for {word} if not found.
         """
         if word in self.entries:
             return self.entries[word]
