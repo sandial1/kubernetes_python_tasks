@@ -1,9 +1,8 @@
-version: '3.8'
 services:
   api:
     build: 
       context: .
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "8000:8000"
     environment:
@@ -14,7 +13,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: mariadb.Dockerfile
+      dockerfile: mariadb.dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: demo
       MYSQL_DATABASE: demo

@@ -1,4 +1,4 @@
-FROM mariadb:11-alpine
+FROM mariadb:11
 
 # Optional: Add custom configuration
 # COPY my.cnf /etc/mysql/conf.d/
