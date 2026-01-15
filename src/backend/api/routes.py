@@ -50,7 +50,7 @@ def sync_dictionary_to_db(dictionary: Dictionary, db: Session):
     db.commit()
 
 
-@router.post("/entries", response_model=WordResponse, status_code=201)
+@router.post("/newentry", response_model=WordResponse, status_code=201)
 def create_entry(entry: WordEntry, db: Session = Depends(get_db)):
     """
     Add a new word and its definition to the dictionary.
@@ -80,7 +80,7 @@ def create_entry(entry: WordEntry, db: Session = Depends(get_db)):
     return WordResponse(word=entry.word, definition=entry.definition)
 
 
-@router.get("/entries/{word}", response_model=WordResponse)
+@router.get("/look/{word}", response_model=WordResponse)
 def get_entry(word: str, db: Session = Depends(get_db)):
     """
     Look up a word in the dictionary.
