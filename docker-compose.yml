@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: "mysql://demo:demo@db:3306/demo"
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: .
+      dockerfile: mariadb.Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: demo
+      MYSQL_DATABASE: demo
+      MYSQL_USER: demo
+      MYSQL_PASSWORD: demo
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./src/mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
