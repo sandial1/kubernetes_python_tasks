@@ -1,9 +1,9 @@
 """FastAPI application entrypoint."""
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from src.backend.config import settings
-from src.backend.database import init_db
-from src.backend.api.routes import router
+from backend.config import settings
+from backend.database import init_db
+from backend.api.routes import router
 
 
 @asynccontextmanager
