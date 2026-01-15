@@ -14,15 +14,34 @@ This project provides Python utilities and tasks for managing Kubernetes cluster
 2. These tasks are basically extract and transform operations which are part of the data preparation steps and as such pipelined and scaled.
 3. Following the idea that these are ETL substitute funtions we could create a container based workload which to scale them and automate them in a single project pipeline.
 
+## Project scope redefinement
+The project was redefined as using the Katas codes as a basis stump to challenge ourselves to learn a new tool. 
+I choose the following:
+- Phase 1: FastAPI. Simple with its own Swagger docs
+- Phase 2: Containeraze it. Make it run with docker compose with a PostreSQL database.
+- Phase 3: Kubernetes deployment
+- Phase 4: Grafana Operator
+- Phase 5: Gatling it down
+
+## Project development log
+- 260115_1039: As of right now I have advanced up to Phase 3 with Claude as my vibe coding tool by progressively describing the final result that I want and polishing the edges on the code that it spits:
+- So far I have had to adjust build commands for uv (`uv pip install` vs `uv add & sync`)
+- docker-compose vs docker compose (v1 vs v2 respectively)
+- The initial code did not even use the Dictionary class for the API...
+- I revised my plan and decided to use Mariadb as my db to save some ram although it probably won't be noticeable in the long run.
 
 ## Requirements & setup
 1. Clone the repository
 2. Install dependencies: `uv install`
+3. Test with: `uv run pytest`
 
 ## Usage
 ```bash
 # Example usage
 uv run pytest
+docker compose up
+docker compose up --build
+docker compose down
 ```
 
 ## Project Structure
