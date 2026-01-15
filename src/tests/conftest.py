@@ -6,8 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from backend.database import Base, get_db
-from main import app
+from src.backend.database import Base, get_db
+from src.main import app
 
 
 # Create in-memory SQLite database for testing

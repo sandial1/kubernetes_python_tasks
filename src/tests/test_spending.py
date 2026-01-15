@@ -1,5 +1,5 @@
 import pytest
-from exercises.spending import get_total
+from src.exercises.spending import get_total
 
 
 class TestBasicCalculations:

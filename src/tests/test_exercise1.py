@@ -1,4 +1,4 @@
-from exercises.exercise1 import add_numbers, reverse_string
+from src.exercises.exercise1 import add_numbers, reverse_string
 
 
 def test_add_numbers():

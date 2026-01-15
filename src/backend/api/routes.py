@@ -2,9 +2,9 @@
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from backend.database import get_db, DictionaryEntry
-from backend.models import WordEntry, WordResponse, MessageResponse
-from exercises.dictionary import Dictionary
+from src.backend.database import get_db, DictionaryEntry
+from src.backend.models import WordEntry, WordResponse, MessageResponse
+from src.exercises.dictionary import Dictionary
 
 router = APIRouter(prefix="/api/v1", tags=["dictionary"])
 

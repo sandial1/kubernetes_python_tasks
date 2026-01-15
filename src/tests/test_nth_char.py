@@ -1,5 +1,5 @@
 import pytest
-from exercises.nth_char import nth_char
+from src.exercises.nth_char import nth_char
 
 
 class TestBasicFunctionality:

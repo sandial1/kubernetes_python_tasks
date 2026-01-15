@@ -2,7 +2,7 @@
 
 from sqlalchemy import create_engine, Column, Integer, String, Text
 from sqlalchemy.orm import sessionmaker, Session, declarative_base
-from backend.config import settings
+from src.backend.config import settings
 
 # Create database engine
 engine = create_engine(

@@ -1,5 +1,5 @@
 import pytest
-from exercises.dictionary import Dictionary
+from src.exercises.dictionary import Dictionary
 
 
 class TestDictionaryInit:
