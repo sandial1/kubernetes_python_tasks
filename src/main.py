@@ -1,4 +1,5 @@
 """FastAPI application entrypoint."""
+
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from backend.config import settings
@@ -19,7 +20,7 @@ app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
     description="A simple dictionary API for storing and retrieving word definitions",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # Include routers
@@ -32,14 +33,11 @@ def root():
     return {
         "status": "healthy",
         "app": settings.app_name,
-        "version": settings.app_version
+        "version": settings.app_version,
     }
 
 
 @app.get("/health", tags=["health"])
 def health_check():
     """Detailed health check endpoint."""
-    return {
-        "status": "healthy",
-        "database": "connected"
-    }
+    return {"status": "healthy", "database": "connected"}
