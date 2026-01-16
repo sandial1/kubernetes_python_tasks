@@ -53,11 +53,6 @@ class DictionaryEntry(Base):
     definition = Column(Text, nullable=False)
 
 
-def init_db():
-    """Initialize the database tables."""
-    Base.metadata.create_all(bind=engine)
-
-
 def get_db():
     """Dependency to get database session."""
     db = SessionLocal()

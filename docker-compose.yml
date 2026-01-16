@@ -7,9 +7,16 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: "mysql://demo:demo@db:3306/demo"
+      DB_HOST: db
+      DB_USER: demo
+      DB_PASSWORD: demo
+      DB_PORT: "3306"
+      DB_NAME: demo
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - app-network
 
   db:
     image: kubernetes-python-tasks-db:latest
@@ -24,7 +31,18 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./src/mariadb_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+    networks:
+      - app-network
 
 volumes:
   mariadb_data:
+
+networks:
+  app-network:
+    driver: bridge

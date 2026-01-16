@@ -26,7 +26,7 @@ spec:
       containers:
       - name: api
         image: kubernetes-python-tasks:latest
-        imagePullPolicy: Always
+        imagePullPolicy: Never
         ports:
         - containerPort: 8000
           name: http
