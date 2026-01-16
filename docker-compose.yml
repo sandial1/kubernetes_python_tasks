@@ -1,5 +1,6 @@
 services:
   api:
+    image: kubernetes-python-tasks-api:latest
     build: 
       context: .
       dockerfile: dockerfile
@@ -11,6 +12,7 @@ services:
       - db
 
   db:
+    image: kubernetes-python-tasks-db:latest
     build:
       context: .
       dockerfile: mariadb.dockerfile

@@ -25,10 +25,12 @@ I choose the following:
 
 ## Project development log
 - 260115_1039: As of right now I have advanced up to Phase 3 with Claude as my vibe coding tool by progressively describing the final result that I want and polishing the edges on the code that it spits:
-- So far I have had to adjust build commands for uv (`uv pip install` vs `uv add & sync`)
-- docker-compose vs docker compose (v1 vs v2 respectively)
-- The initial code did not even use the Dictionary class for the API...
-- I revised my plan and decided to use Mariadb as my db to save some ram although it probably won't be noticeable in the long run.
+1. So far I have had to adjust build commands for uv (`uv pip install` vs `uv add & sync`)
+2. docker-compose vs docker compose (v1 vs v2 respectively)
+3. The initial code did not even use the Dictionary class for the API...
+4. I revised my plan and decided to use Mariadb as my db to save some ram although it probably won't be noticeable in the long run.
+- 260115_1438: I was working on solidifying some thing around and making sure it was testable and notice and issue that I am going to table for later: new_entry and delete routes are case insensitive which is not intended behaviour... I will tackled this issue after I manage to add the Grafana Operator to this solution.
+TODO: Fix case insensitivity of the post and delete methods of the database.
 
 ## Requirements & setup
 1. Clone the repository
