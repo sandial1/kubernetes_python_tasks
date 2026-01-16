@@ -1,22 +1,47 @@
 """Database connection and session management."""
 
-from sqlalchemy import create_engine, Column, Integer, String, Text
-from sqlalchemy.orm import sessionmaker, Session, declarative_base
+import logging
+import time
+
+from sqlalchemy import Column, Integer, String, Text, create_engine, exc
+from sqlalchemy.orm import Session, declarative_base, sessionmaker
 from src.backend.config import settings
 
-# Create database engine
+from src.backend.config import settings
+
+# Setup logging to see retry attempts in 'kubectl logs'
+logger = logging.getLogger(__name__)
+
+SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
+
+# Use pool_pre_ping to liveness check connections
 engine = create_engine(
-    settings.database_url.replace("mysql://", "mysql+pymysql://"),
+    SQLALCHEMY_DATABASE_URL,
     pool_pre_ping=True,
-    echo=True,  # Set to False in production
+    pool_recycle=3600
 )
 
-# Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# Base class for models
 Base = declarative_base()
 
+def init_db():
+    """Initialize database with retries for Kubernetes resilience."""
+    max_retries = 5
+    retry_delay = 5
+    
+    for i in range(max_retries):
+        try:
+            logger.info(f"Connecting to database (attempt {i+1}/{max_retries})...")
+            # This creates the tables if they don't exist
+            Base.metadata.create_all(bind=engine)
+            logger.info("Database initialized successfully.")
+            break
+        except exc.OperationalError as e:
+            if i == max_retries - 1:
+                logger.error("Could not connect to database after max retries.")
+                raise e
+            logger.warning(f"Database not ready, retrying in {retry_delay}s...")
+            time.sleep(retry_delay)
 
 class DictionaryEntry(Base):
     """SQLAlchemy model for dictionary entries."""

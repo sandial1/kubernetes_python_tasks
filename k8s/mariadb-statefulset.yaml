@@ -18,7 +18,9 @@ spec:
     spec:
       containers:
       - name: mariadb
-        image: kubernetes-python-tasks-db:latest
+        image: mariadb:latest
+        args:
+          - "--bind-address=0.0.0.0"
         ports:
         - containerPort: 3306
           name: mysql
@@ -54,20 +56,14 @@ spec:
         - name: mariadb-data
           mountPath: /var/lib/mysql
         livenessProbe:
-          exec:
-            command:
-            - /bin/bash
-            - -c
-            - mysqladmin ping -u root -p$MYSQL_ROOT_PASSWORD
+          tcpSocket:
+            port: 3306
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
         readinessProbe:
-          exec:
-            command:
-            - /bin/bash
-            - -c
-            - mysqladmin ping -u root -p$MYSQL_ROOT_PASSWORD
+          tcpSocket:
+            port: 3306
           initialDelaySeconds: 20
           periodSeconds: 5
           timeoutSeconds: 3
