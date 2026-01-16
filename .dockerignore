@@ -5,3 +5,9 @@ __pycache__
 *.pyo
 *.pyd
 .venv/
+mariadb_data/
+src/mariadb_data/
+htmlcov/
+.git/
+.env
+.env.local

@@ -13,9 +13,9 @@ This document provides comprehensive instructions for deploying the Dictionary A
 
 ```
 k8s/
-├── namespace.yaml              # Kubernetes namespace
-├── configmap.yaml              # Application configuration
-├── secret.yaml                 # Database credentials
+├── namespace.yaml             # Kubernetes namespace
+├── configmap.yaml             # Application configuration
+├── secret.yaml                # Database credentials
 ├── mariadb-pvc.yaml           # PersistentVolumeClaim for MariaDB
 ├── mariadb-service.yaml       # Headless service for MariaDB
 ├── mariadb-statefulset.yaml   # MariaDB database
