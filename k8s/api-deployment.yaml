@@ -26,7 +26,7 @@ spec:
       initContainers:
       - name: wait-for-db
         image: busybox:1.28
-        command: ['sh', '-c', "until nc -zv mariadb-service 3306; do echo waiting for db; sleep 2; done"]
+        command: ['sh', '-c', "until nc -zv mariadb-operator-instance 3306; do echo waiting for db; sleep 2; done"]
       containers:
       - name: api
         image: kubernetes-python-tasks:latest
