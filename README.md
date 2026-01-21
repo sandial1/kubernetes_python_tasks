@@ -31,7 +31,11 @@ I choose the following:
 4. I revised my plan and decided to use Mariadb as my db to save some ram although it probably won't be noticeable in the long run.
 - 260115_1438: I was working on solidifying some thing around and making sure it was testable and notice and issue that I am going to table for later: new_entry and delete routes are case insensitive which is not intended behaviour... I will tackled this issue after I manage to add the Grafana Operator to this solution.
 TODO: Fix case insensitivity of the post and delete methods of the database.
-
+- 260116_1334: I finally managed to get the Kubernetes deployment working... it truly game me the go around:
+1. The first and mayor problem I had was context: I have Docker Desktop and Rancher Desktop on my pc and both have their own managed docker and docker compose binaries which conflicted in either permissions or visible namespaces everytime I tried to deploy k8s... as such I had to investigate a bit how to actually change the context and environment for these binaries without breaking them as I want to keep them. This issue with all of this? Kubernetes needed to build and make visible/add to namespace the images of the containers that I was using and that was simply impossible without fixing this issue.
+2. The second issue? uv is awesome but adds a complexity layer to dockerfile authoring. Doubly so as most LLM documentation for dockerfiles is for raw python and pip which means that I had to dig a bit to solve any issue. Gemini was actually a better information font in this step than Github Copilot so that is something to keep in mind.
+3. There is an issue that cropped up once I got a working deployment and its that for some reason there is a lag between the api and database and i think it is because multiple replicas flood the database and it locks temporarily but I would need to dig into it...
+TODO: Investigate this issue: Replace MariaDB for its operator and then see if that solves the issue.
 ## Requirements & setup
 1. Clone the repository
 2. Install dependencies: `uv install`
