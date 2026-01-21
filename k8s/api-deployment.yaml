@@ -23,6 +23,10 @@ spec:
         app: dictionary-api
         tier: application
     spec:
+      initContainers:
+      - name: wait-for-db
+        image: busybox:1.28
+        command: ['sh', '-c', "until nc -zv mariadb-service 3306; do echo waiting for db; sleep 2; done"]
       containers:
       - name: api
         image: kubernetes-python-tasks:latest

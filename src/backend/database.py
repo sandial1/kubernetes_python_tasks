@@ -20,21 +20,22 @@ engine = create_engine(
     pool_pre_ping=True,
     pool_recycle=3600,
     pool_size=10,
-    max_overflow=20,
-    echo=False
+    max_overflow=5,
+    echo=False,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 def init_db():
     """Initialize database with retries for Kubernetes resilience."""
     max_retries = 5
     retry_delay = 5
-    
+
     for i in range(max_retries):
         try:
-            logger.info(f"Connecting to database (attempt {i+1}/{max_retries})...")
+            logger.info(f"Connecting to database (attempt {i + 1}/{max_retries})...")
             # This creates the tables if they don't exist
             Base.metadata.create_all(bind=engine)
             logger.info("Database initialized successfully.")
@@ -45,6 +46,7 @@ def init_db():
                 raise e
             logger.warning(f"Database not ready, retrying in {retry_delay}s...")
             time.sleep(retry_delay)
+
 
 class DictionaryEntry(Base):
     """SQLAlchemy model for dictionary entries."""
