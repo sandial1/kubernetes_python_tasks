@@ -7,9 +7,8 @@ resources:
   - namespace.yaml
   - configmap.yaml
   - secret.yaml
-  - mariadb-pvc.yaml
-  - mariadb-service.yaml
-  - mariadb-statefulset.yaml
+  - mariadb-resources.yaml
+  - mariadb-operator-instance.yaml
   - api-service.yaml
   - api-deployment.yaml
   - ingress.yaml

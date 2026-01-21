@@ -77,3 +77,7 @@ spec:
           runAsUser: 1000
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: false
+      initContainers:
+      - name: wait-for-db
+        image: busybox:1.28
+        command: ['sh', '-c', "until nc -zv mariadb-operator-instance 3306; do echo waiting for db; sleep 2; done"]

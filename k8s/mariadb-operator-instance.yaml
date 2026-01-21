@@ -1,0 +1,20 @@
+apiVersion: k8s.mariadb.com/v1alpha1
+kind: MariaDB
+metadata:
+  name: mariadb-operator-instance
+  namespace: dictionary-api
+spec:
+  rootPasswordSecretKeyRef:
+    name: db-credentials
+    key: mysql_root_password
+
+  # This replaces your current mariadb-pvc.yaml
+  storage:
+    size: 5Gi
+    storageClassName: local-path
+
+  # The operator manages these connections for you
+  port: 3306
+
+  # Example of a basic single-node setup
+  replicas: 1
