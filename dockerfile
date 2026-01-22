@@ -30,4 +30,6 @@ EXPOSE 8000
 
 # FIX: Run uvicorn directly instead of 'uv run'
 # This avoids runtime permission checks by the uv binary
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+#CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Replace your current uvicorn command with this
+CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "src.main:app", "--bind", "0.0.0.0:8000"]
