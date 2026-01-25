@@ -46,13 +46,13 @@ def list_entries(db: SessionDep, skip: int = 0, limit: int = 100):
     List entries using server-side pagination.
     This prevents the API from hanging by only fetching a small slice of data.
     """
-    return db.exec(select(DictionaryEntry).offset(skip).limit(limit).all())
+    return db.exec(select(DictionaryEntry).offset(skip).limit(limit)).all()
 
 
 @router.delete("/entries/{word}")
 def delete_entry(word: str, db: SessionDep):
     """Delete a word directly from the database."""
-    entry = db.exec(DictionaryEntry).filter(DictionaryEntry.word == word).first()
+    entry = db.exec(select(DictionaryEntry).filter(DictionaryEntry.word == word)).first()
 
     if not entry:
         raise HTTPException(status_code=404, detail=f"Can't find entry for {word}")
