@@ -1,17 +1,16 @@
-"""Pydantic models for API request/response validation."""
+from typing import Optional
 
-from pydantic import BaseModel
+from sqlmodel import Field, SQLModel
 
 
-class WordEntry(BaseModel):
-    word: str
+class WordBase(SQLModel):
+    word: str = Field(unique=True, index=True)
     definition: str
 
 
-class WordResponse(BaseModel):
-    word: str
-    definition: str
+class DictionaryEntry(WordBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
 
 
-class MessageResponse(BaseModel):
-    message: str
+class WordResponse(WordBase):
+    pass

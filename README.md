@@ -37,6 +37,9 @@ TODO: Fix case insensitivity of the post and delete methods of the database.
 3. There is an issue that cropped up once I got a working deployment and its that for some reason there is a lag between the api and database and i think it is because multiple replicas flood the database and it locks temporarily but I would need to dig into it...
 ~~TODO~~: Investigate this issue: Replace MariaDB for its operator and then see if that solves the issue.
 260121_1908: I managed to get the operator working and it did not resolve the underlying issue: configuration. It turns out that Kubernetes health checks overwhelmed both the api and the database (more the first than the second actually) and as such I need to work more on strenghtening my bases to actually understand what makes a good Kubernetes config in a live environment. Another point that comes from relying on AI to get a basic setup working is the fact that the underlaying environmental vairables? out of sync as the AI forgets that it set something in one part of the other and since I did not stablish a firm convention then it created its own at every step confusing things like databse credentials and connection strings... something to keep in mind for future work.
+260124_2359: I need to polish the base API as it seems to be the main hangup here:
+- Discard the dictionary intermediary.
+- Replace SQLAlchemy calls for SQLModel which is more inline with FastAPI principles.
 
 ## Lessons and reflection
 There are many things that I can reflect while  going through this experience:

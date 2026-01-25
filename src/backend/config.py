@@ -7,10 +7,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     app_name: str = "Dictionary API"
     app_version: str = "1.0.0"
-    # Individual DB components are easier to manage in K8s Secret/ConfigMaps
     DB_USER: str = Field(default="demo")
     DB_PASSWORD: str = Field(default="demo")
-    DB_HOST: str = Field(default="mariadb-operator-instance")  # Matches your K8s Service name
+    DB_HOST: str = Field(default="mariadb-operator-instance")
     DB_PORT: str = Field(default="3306")
     DB_NAME: str = Field(default="dictionary-db")
 
