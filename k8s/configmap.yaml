@@ -7,14 +7,3 @@ data:
   app_name: "Dictionary API"
   app_version: "1.0.0"
   log_level: "info"
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: mariadb-init-script
-  namespace: dictionary-api
-data:
-  init.sql: |
-    GRANT ALL PRIVILEGES ON dictionary_db.* TO 'demo'@'%' IDENTIFIED BY 'demo';
-    FLUSH PRIVILEGES;

@@ -35,3 +35,4 @@ spec:
   database: "dictionary-db"
   table: "*"
   username: "demo"
+  host: "%"

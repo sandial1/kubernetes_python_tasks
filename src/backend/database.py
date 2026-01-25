@@ -5,7 +5,6 @@ import time
 
 from sqlalchemy import Column, Integer, String, Text, create_engine, exc
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
-from src.backend.config import settings
 
 from src.backend.config import settings
 
