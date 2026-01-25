@@ -1,89 +1,88 @@
-"""Tests for the Dictionary class."""
-
 import pytest
-from src.exercises.dictionary import Dictionary
+from fastapi.testclient import TestClient
+from sqlmodel import SQLModel, Session, create_engine
+
+from src.main import app
+from src.backend.database import get_session
+
+# 1. Setup an in-memory database for testing
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+engine = create_engine(
+    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+)
+TestingSessionLocal = Session(autocommit=False, autoflush=False, bind=engine)
 
 
-class TestDictionary:
-    """Test suite for Dictionary class."""
+# 2. Dependency override to use the test database
+def override_get_session():
+    with TestingSessionLocal as session:
+        yield session
 
-    def test_init(self):
-        """Test dictionary initialization."""
-        dictionary = Dictionary()
-        assert dictionary.entries == {}
 
-    def test_newentry_single(self):
-        """Test adding a single entry."""
-        dictionary = Dictionary()
-        dictionary.newentry("python", "A programming language")
+app.dependency_overrides[get_session] = override_get_session
+client = TestClient(app)
 
-        assert "python" in dictionary.entries
-        assert dictionary.entries["python"] == "A programming language"
 
-    def test_newentry_multiple(self):
-        """Test adding multiple entries."""
-        dictionary = Dictionary()
-        dictionary.newentry("python", "A programming language")
-        dictionary.newentry("java", "Another programming language")
+@pytest.fixture(autouse=True)
+def setup_db():
+    """Create tables before each test and drop them after."""
+    SQLModel.metadata.create_all(bind=engine)
+    yield
+    SQLModel.metadata.drop_all(bind=engine)
 
-        assert len(dictionary.entries) == 2
-        assert dictionary.entries["python"] == "A programming language"
-        assert dictionary.entries["java"] == "Another programming language"
 
-    def test_newentry_overwrite(self):
-        """Test that newentry overwrites existing entries."""
-        dictionary = Dictionary()
-        dictionary.newentry("python", "First definition")
-        dictionary.newentry("python", "Second definition")
+class TestDictionaryAPI:
+    """Test suite for Dictionary API endpoints."""
 
-        assert dictionary.entries["python"] == "Second definition"
-        assert len(dictionary.entries) == 1
+    def test_create_entry(self):
+        """Test the POST /api/v1/newentry endpoint."""
+        response = client.post(
+            "/api/v1/newentry",
+            json={"word": "python", "definition": "A programming language"},
+        )
+        assert response.status_code == 201
+        assert response.json()["word"] == "python"
 
     def test_look_existing_word(self):
-        """Test looking up an existing word."""
-        dictionary = Dictionary()
-        dictionary.newentry("python", "A programming language")
+        """Test the GET /api/v1/look/{word} endpoint."""
+        # First, seed the data
+        client.post(
+            "/api/v1/newentry",
+            json={"word": "fastapi", "definition": "A web framework"},
+        )
 
-        result = dictionary.look("python")
-        assert result == "A programming language"
+        response = client.get("/api/v1/look/fastapi")
+        assert response.status_code == 200
+        assert response.json()["definition"] == "A web framework"
 
     def test_look_nonexistent_word(self):
-        """Test looking up a non-existent word."""
-        dictionary = Dictionary()
+        """Test looking up a word that doesn't exist."""
+        response = client.get("/api/v1/look/nonexistent")
+        assert response.status_code == 404
+        assert "Can't find entry" in response.json()["detail"]
 
-        result = dictionary.look("nonexistent")
-        assert result == "Can't find entry for nonexistent"
+    def test_duplicate_entry(self):
+        """Test that adding the same word twice returns a 400 error."""
+        data = {"word": "unique", "definition": "test"}
+        client.post("/api/v1/newentry", json=data)
+        response = client.post("/api/v1/newentry", json=data)
+        assert response.status_code == 400
 
-    def test_look_after_multiple_entries(self):
-        """Test looking up words after adding multiple entries."""
-        dictionary = Dictionary()
-        dictionary.newentry("python", "A programming language")
-        dictionary.newentry("java", "Another programming language")
+    def test_list_entries(self):
+        """Test the GET /api/v1/entries pagination."""
+        client.post("/api/v1/newentry", json={"word": "a", "definition": "1"})
+        client.post("/api/v1/newentry", json={"word": "b", "definition": "2"})
 
-        assert dictionary.look("python") == "A programming language"
-        assert dictionary.look("java") == "Another programming language"
-        assert dictionary.look("ruby") == "Can't find entry for ruby"
+        response = client.get("/api/v1/entries?limit=1")
+        assert response.status_code == 200
+        assert len(response.json()) == 1
 
-    def test_empty_word(self):
-        """Test adding and looking up empty string."""
-        dictionary = Dictionary()
-        dictionary.newentry("", "Empty word definition")
+    def test_delete_entry(self):
+        """Test the DELETE /api/v1/entries/{word} endpoint."""
+        client.post("/api/v1/newentry", json={"word": "gone", "definition": "bye"})
+        response = client.delete("/api/v1/entries/gone")
+        assert response.status_code == 200
 
-        assert dictionary.look("") == "Empty word definition"
-
-    def test_empty_definition(self):
-        """Test adding empty definition."""
-        dictionary = Dictionary()
-        dictionary.newentry("word", "")
-
-        assert dictionary.look("word") == ""
-
-    def test_case_sensitivity(self):
-        """Test that dictionary is case-sensitive."""
-        dictionary = Dictionary()
-        dictionary.newentry("Python", "Capitalized")
-        dictionary.newentry("python", "Lowercase")
-
-        assert dictionary.look("Python") == "Capitalized"
-        assert dictionary.look("python") == "Lowercase"
-        assert len(dictionary.entries) == 2
+        # Verify it's actually gone
+        get_response = client.get("/api/v1/look/gone")
+        assert get_response.status_code == 404
