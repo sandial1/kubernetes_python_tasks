@@ -86,3 +86,9 @@ class TestDictionaryAPI:
         # Verify it's actually gone
         get_response = client.get("/api/v1/look/gone")
         assert get_response.status_code == 404
+    
+    def test_delete_entry_not_found(self):
+        """Test the DELETE /api/v1/entries/{word} endpoint for not found entries."""        
+        response = client.delete("/api/v1/entries/test")
+        assert response.status_code == 404
+        assert "Can't find entry" in response.json()["detail"]
